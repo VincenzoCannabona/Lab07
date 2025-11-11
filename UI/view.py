@@ -1,4 +1,6 @@
 import flet as ft
+from flet.core.dropdown import Dropdown
+from flet.core.types import MainAxisAlignment
 from UI.alert import AlertManager
 
 '''
@@ -36,10 +38,29 @@ class View:
         self.txt_titolo = ft.Text(value="Musei di Torino", size=38, weight=ft.FontWeight.BOLD)
 
         # --- Sezione 2: Filtraggio ---
-        # TODO
+        self.dd_museo = Dropdown(label="Musei",
+                                  options=[],
+                                  width=200,
+                                  hint_text="seleziona il museo",
+                                  on_change=self.controller.mostra_artefatti_filtrati
+                                  )
+
+        self.dd_epoca= Dropdown(label="Epoca",
+                                options=[],
+                                width=200,
+                                hint_text="seleziona l'epoca",
+                                on_change=self.controller.mostra_artefatti_filtrati
+                                )
+
 
         # Sezione 3: Artefatti
-        # TODO
+        self.btn_mostra_artefatti= ft.ElevatedButton(text="Mostra Artefatti filtrati",
+                                                   width=200,
+                                                   on_click=self.controller.mostra_artefatti_filtrati
+                                                   )
+        self.lista_artefatti_filtrati= ft.ListView(expand=True,
+                                                   spacing=10,
+                                                   padding=10)
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)
@@ -53,10 +74,13 @@ class View:
             ft.Divider(),
 
             # Sezione 2: Filtraggio
-            # TODO
+            ft.Row(controls=[self.dd_museo, self.dd_epoca],
+                    alignment=MainAxisAlignment.CENTER),
 
             # Sezione 3: Artefatti
-            # TODO
+            self.btn_mostra_artefatti,
+            ft.Divider(),
+            self.lista_artefatti_filtrati
         )
 
         self.page.scroll = "adaptive"
